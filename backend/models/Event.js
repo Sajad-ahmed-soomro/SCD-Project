@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const eventSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    category: { type: String, required: true },
-    date: { type: Date, required: true },
-    location: { type: String, required: true },
-    managerId: { type: mongoose.Schema.Types.ObjectId, ref: 'EventManager' },
-    sponsors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sponsor' }],
-    status: { type: String, default: 'Pending Approval' },
-    ticketAvailability: { type: Boolean, default: true },
-    approvalStatus: { type: String, default: 'Pending' },
-    popularity: { type: Number, default: 0 }
+// Define the schema for the Event model
+const eventSchema = new Schema({
+    name: { type: String, required: true },  // Name of the event
+    description: { type: String, required: true },  // Description of the event
+    date: { type: Date, required: true },  // Event date
+    location: { type: String, required: true },  // Event location
+    status: { type: String, default: 'Active' },  // Event status (Active, Inactive)
+    createdAt: { type: Date, default: Date.now },  // Date when the event was created
+    updatedAt: { type: Date, default: Date.now }  // Date when the event was last updated
 });
 
-module.exports = mongoose.model('Event', eventSchema);
+// Create and export the Event model
+module.exports = mongoose.models.Event || mongoose.model('Event', eventSchema);
