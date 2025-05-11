@@ -18,3 +18,19 @@ Thumbs.db
 # IDE-specific files
 .vscode/
 .idea/
+
+# Ignore environment variables
+.env
+.env.local
+
+# Ignore build and dependency folders
+node_modules/
+build/
+dist/
+
+# Ignore log files
+*.log
+
+# Ignore Docker volumes or temp files
+docker-volume/
+tmp/
