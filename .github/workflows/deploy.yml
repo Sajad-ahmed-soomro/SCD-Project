@@ -5,7 +5,7 @@ on:
     workflows: ["Build and Push Docker Image"]
     types:
       - completed
-  workflow_dispatch:  # Optional: allows manual trigger
+  workflow_dispatch: # Optional: allows manual triggers to runn
 
 jobs:
   deploy:
@@ -17,8 +17,10 @@ jobs:
 
       - name: Set up Kubeconfig
         run: |
+          echo "Creating ~/.kube directory and copying kubeconfig"
           mkdir -p $HOME/.kube
-          cp $HOME/.kube/config $HOME/.kube/config  # Uses current user's kubeconfig
+          cp /home/sajad-ahmed/.kube/config $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
 
       - name: Set KUBECONFIG environment variable
         run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
@@ -30,12 +32,19 @@ jobs:
           echo "Kubeconfig:"
           cat $HOME/.kube/config
 
+      - name: Verify kubectl access
+        run: |
+          echo "kubectl version:"
+          kubectl version --client
+          echo "Cluster Info:"
+          kubectl cluster-info
+
       - name: Debug Kubeconfig and Cluster
         run: |
           echo "Current context:"
           kubectl config current-context
-          echo "Available deployments:"
-          kubectl get deployments -n my-namespace
+          echo "Available deployments in 'my-namespace':"
+          kubectl get deployments -n my-namespace || echo "No deployments found."
 
       - name: Deploy backend to Minikube
         run: |
