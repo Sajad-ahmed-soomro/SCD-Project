@@ -14,11 +14,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set Kubeconfig (optional if already configured)
+      - name: Set up Kubeconfig
         run: |
           mkdir -p $HOME/.kube
           cp /home/sajad-ahmed/.kube/config $HOME/.kube/config
+        # Make sure kubectl uses this file
+      - name: Set KUBECONFIG environment variable
+        run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
+      - name: Debug Kubeconfig and Cluster
+        run: |
+          echo "Current context:"
+          kubectl config current-context
+          echo "Available deployments:"
+          kubectl get deployments -n my-namespace
 
       - name: Deploy backend to Minikube
         run: |
