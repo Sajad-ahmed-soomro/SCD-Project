@@ -21,12 +21,13 @@ const Login = () => {
             // Send login request based on user type
             const response = await axios.post(
                 userType === "admin"
-                    ? "http://localhost:5000/api/admin/login"
+                    ? "/api/admin/login"
                     : userType === "manager"
-                        ? "http://localhost:5000/api/manager/login"
-                        : "http://localhost:5000/api/user/login",
+                    ? "/api/manager/login"
+                    : "/api/user/login",
                 payload
             );
+            
 
             console.log("Backend Response:", response.data);
 

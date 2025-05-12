@@ -1,0 +1,25 @@
+name: Deploy to Local Minikube
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Kubeconfig (optional if already configured)
+        run: |
+          mkdir -p $HOME/.kube
+          cp /home/sajad-ahmed/.kube/config $HOME/.kube/config
+
+
+      - name: Deploy backend to Minikube
+        run: |
+          kubectl rollout restart deployment backend-deployment -n my-namespace
