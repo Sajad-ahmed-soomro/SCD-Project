@@ -5,6 +5,7 @@ on:
     workflows: ["Build and Push Docker Image"]
     types:
       - completed
+  workflow_dispatch:  # Optional: allows manual trigger
 
 jobs:
   deploy:
@@ -17,10 +18,17 @@ jobs:
       - name: Set up Kubeconfig
         run: |
           mkdir -p $HOME/.kube
-          cp /home/sajad-ahmed/.kube/config $HOME/.kube/config
-        # Make sure kubectl uses this file
+          cp $HOME/.kube/config $HOME/.kube/config  # Uses current user's kubeconfig
+
       - name: Set KUBECONFIG environment variable
         run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+      - name: Debug runner user and kubeconfig
+        run: |
+          echo "Running as user: $(whoami)"
+          echo "Home directory: $HOME"
+          echo "Kubeconfig:"
+          cat $HOME/.kube/config
 
       - name: Debug Kubeconfig and Cluster
         run: |
