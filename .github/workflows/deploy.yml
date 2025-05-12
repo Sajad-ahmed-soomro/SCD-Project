@@ -50,3 +50,4 @@ jobs:
       - name: Deploy backend to Minikube
         run: |
           kubectl rollout restart deployment backend-deployment -n my-namespace
+# dummy change
