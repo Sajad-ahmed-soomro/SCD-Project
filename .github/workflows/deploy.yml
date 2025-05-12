@@ -6,6 +6,7 @@ on:
     types:
       - completed
   workflow_dispatch: # Optional: allows manual triggers to runn
+  # testing the app
 
 jobs:
   deploy:
